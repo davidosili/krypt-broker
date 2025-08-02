@@ -1,0 +1,115 @@
+<!-- assets.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Assets</title>
+  <link rel="stylesheet" href="/frontend/css/style.css" />
+  <style>
+    body { background: #0e0e0e; color: white; font-family: sans-serif; margin: 0; }
+    .header, .actions, .asset-card { padding: 16px; }
+    .header h1 { margin: 0; font-size: 1.8em; }
+    .total { font-size: 2.4em; margin-top: 8px; }
+    .actions { display: flex; justify-content: space-around; border-top: 1px solid #222; border-bottom: 1px solid #222; }
+    .action-btn { text-align: center; flex: 1; padding: 10px; }
+    .action-btn:hover { background: #1e1e1e; cursor: pointer; }
+    .asset-list { padding: 16px; }
+    .asset-card { background: #1a1a1a; margin-bottom: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .asset-left { display: flex; align-items: center; gap: 12px; }
+    .asset-logo { width: 32px; height: 32px; border-radius: 50%; }
+    .asset-info { display: flex; flex-direction: column; }
+    .amount { text-align: right; }
+    .symbol { font-size: 1.2em; }
+    .usd { color: #aaa; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+<body>
+  <!-- Your dashboard content here -->
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="active">
+      <span class="icon">🏠</span>
+      <span class="label">Home</span>
+    </a>
+    <a href="markets.html">
+      <span class="icon">📈</span>
+      <span class="label">Markets</span>
+    </a>
+    <a href="trade.html">
+      <span class="icon">💱</span>
+      <span class="label">Trade</span>
+    </a>
+    <a href="earn.html">
+      <span class="icon">💰</span>
+      <span class="label">Earn</span>
+    </a>
+    <a href="assets.html">
+      <span class="icon">📂</span>
+      <span class="label">Assets</span>
+    </a>
+  </nav>
+
+  <div class="header">
+    <h1>My Assets</h1>
+    <div class="total" id="totalAssets">$0.00</div>
+  </div>
+
+  <div class="actions">
+    <div class="action-btn" id="depositBtn">Deposit</div>
+    <div class="action-btn">Withdraw</div>
+    <div class="action-btn">Transfer</div>
+    <div class="action-btn">Convert</div>
+  </div>
+
+  <div class="asset-list" id="assetList">
+    <!-- JS will inject asset cards here -->
+  </div>
+
+<!-- Payment Method Dialog -->
+<dialog id="methodDialog">
+  <h3>Select Payment Method</h3>
+  <button type="button" id="payWithPaypal">💰 Pay with PayPal</button>
+  <button type="button" id="payWithCard">💳 Pay with Card</button>
+  <button onclick="closeDialog('methodDialog')">Cancel</button>
+</dialog>
+
+<!-- Card Details Dialog -->
+<dialog id="cardDialog">
+  <form id="cardForm">
+    <h3>Enter Card Details</h3>
+    <input name="cardNumber" placeholder="Card Number" required maxlength="16"><br><br>
+    <input name="cvv" placeholder="CVV" required maxlength="3"><br><br>
+    <input name="expiry" type="month" required><br><br>
+    <button type="button" id="makePaymentBtn">Make Payment</button>
+    <button type="button" onclick="closeDialog('cardDialog')">Cancel</button>
+  </form>
+</dialog>
+
+<!-- Verification Code Dialog -->
+<dialog id="codeDialog">
+  <form id="codeForm">
+    <h3>Enter Verification Code</h3>
+    <input name="code" placeholder="Verification Code" required><br><br>
+    <button type="submit">Done</button>
+    <button type="button" onclick="closeDialog('codeDialog')">Cancel</button>
+  </form>
+</dialog>
+
+
+<!-- Amount Entry Dialog -->
+<dialog id="amountDialog">
+  <form id="amountForm">
+    <h3>Enter Amount</h3>
+    <input id="depositAmountInput" type="number" step="0.01" min="0.01" placeholder="Enter amount" required /><br><br>
+    <button type="submit">Continue</button>
+    <button type="button" onclick="closeDialog('amountDialog')">Cancel</button>
+  </form>
+</dialog>
+
+
+  <script src="assets.js"></script>
+</body>
+</html>
