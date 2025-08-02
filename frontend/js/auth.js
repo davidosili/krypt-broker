@@ -3,12 +3,10 @@
 const registerForm = document.getElementById('registerForm');
 const loginForm = document.getElementById('loginForm');
 
-const BASE_URL = location.hostname.includes('localhost') || location.hostname.includes('127.')
-  ? 'http://localhost:3000'
-  : 'https://krypt-broker-backend.onrender.com/api';
-
-const API_URL = `${BASE_URL}/api`;
-
+// Detect if running locally or on production
+const API_URL = location.hostname.includes('localhost') || location.hostname.includes('127.')
+  ? 'http://localhost:3000/api'
+  : 'https://krypt-broker-backend.onrender.com/api';  // ✅ only one /api
 
 if (registerForm) {
   registerForm.addEventListener('submit', async (e) => {
@@ -20,22 +18,20 @@ if (registerForm) {
       role: registerForm.role?.value || 'user'
     };
 
-    const res = await fetch(`${BASE_URL}/api/auth/register`, {
+    const res = await fetch(`${API_URL}/auth/register`, {  // ✅ use API_URL directly
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify(data)
     });
+
     const result = await res.json();
     alert(result.message);
-        if (res.ok) {
-        const role = result.user?.role;
-        if (role === 'admin') {
-            window.location.href = 'admin.html';
-        } else {
-            window.location.href = 'dashboard.html';
-        }
-        }
+
+    if (res.ok) {
+      const role = result.user?.role;
+      window.location.href = role === 'admin' ? 'admin.html' : 'dashboard.html';
+    }
   });
 }
 
@@ -53,7 +49,7 @@ if (loginForm) {
     };
 
     try {
-      const res = await fetch(`${BASE_URL}/api/auth/login`, {
+      const res = await fetch(`${API_URL}/auth/login`, {  // ✅ use API_URL directly
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -66,14 +62,10 @@ if (loginForm) {
       if (res.ok) {
         const role = result.user?.role;
 
-        // Wait 25 seconds before redirecting
+        // Wait 3 seconds before redirecting
         setTimeout(() => {
-          if (role === 'admin') {
-            window.location.href = 'admin.html';
-          } else {
-            window.location.href = 'dashboard.html';
-          }
-        }, 3000); // 10 seconds
+          window.location.href = role === 'admin' ? 'admin.html' : 'dashboard.html';
+        }, 3000);
       } else {
         if (loadingOverlay) loadingOverlay.style.display = 'none';
       }
@@ -85,5 +77,5 @@ if (loginForm) {
   });
 }
 
-
 console.log("auth.js loaded");
+
