@@ -16,7 +16,8 @@ app.use(cors({
     'http://localhost:5500',
     'http://127.0.0.1:5500',
     'https://mr73c5kx-5500.uks1.devtunnels.ms',
-    'https://krypt-broker-frontend.onrender.com'  // ✅ your frontend DevTunnel
+    'https://krypt-broker-frontend.onrender.com',
+     'https://krypt-broker-frontend.onrender.com' // ✅ my frontend
   ],
   credentials: true
 }));
