@@ -4,54 +4,48 @@ const session = require('express-session');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
-const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser'); // ✅ Needed for sessions to work properly
 
 dotenv.config();
+
 const app = express();
 
-// ✅ Detect production mode for Render
-const isProduction = process.env.NODE_ENV === 'production';
-
-// ✅ Allowed CORS origins (Frontend + Local)
-const allowedOrigins = [
-  'http://localhost:5500',
-  'http://127.0.0.1:5500',
-  'https://mr73c5kx-5500.uks1.devtunnels.ms', // DevTunnel
-  'https://krypt-broker-site.onrender.com',    // Live frontend
-];
-
-// ✅ CORS middleware
+// ✅ CORS config - allow DevTunnel frontend to access the backend
 app.use(cors({
-  origin: allowedOrigins,
+  origin: [
+    'http://localhost:5500',
+    'http://127.0.0.1:5500',
+    'https://mr73c5kx-5500.uks1.devtunnels.ms',
+    'https://krypt-broker-site.onrender.com', // ✅ my frontend
+  ],
   credentials: true
 }));
 
-// ✅ Handle preflight OPTIONS requests
-app.options('*', cors({
-  origin: allowedOrigins,
-  credentials: true
-}));
-
-// ✅ Parse cookies and JSON
+// ✅ Parse cookies before sessions
 app.use(cookieParser());
+
+// ✅ Enable JSON parsing
 app.use(express.json());
 
-// ✅ Session config
+// ✅ Session config - this must come after cookieParser
+const isDevTunnel = process.env.NODE_ENV === 'production' || process.env.DEVTUNNEL === 'true';
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'secret',
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: isProduction,       // Cookie only secure in production
-    sameSite: isProduction ? 'none' : 'lax',
-    maxAge: 24 * 60 * 60 * 1000 // 1 day
+    secure: isDevTunnel,
+    sameSite: isDevTunnel ? 'none' : 'lax',
+    maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
-console.log('Running in production mode:', isProduction);
+console.log('isDevTunnel:', isDevTunnel);
 
-// ✅ Import Routes
+
+// ✅ Routes
 const paymentRoutes = require('./routes/paymentRoutes');
 const authRoutes = require('./routes/authRoutes');
 const tradeRoutes = require('./routes/tradeRoutes');
@@ -59,7 +53,6 @@ const coinProxyRoutes = require('./routes/coinProxyRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const alertRoutes = require('./routes/alertRoutes');
 const newsRoutes = require('./routes/newsRoutes');
-const copyRoutes = require('./routes/copyRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/trade', tradeRoutes);
@@ -67,13 +60,13 @@ app.use('/api/coin', coinProxyRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/alerts', alertRoutes);
 app.use('/api/news', newsRoutes);
-app.use('/api/copy', copyRoutes);
+app.use('/api/copy', require('./routes/copyRoutes'));
 app.use('/api/payment', paymentRoutes);
 
 // ✅ Serve frontend statically
 app.use('/frontend', express.static(path.join(__dirname, '../frontend')));
 
-// ✅ Redirect root to login page
+// ✅ Redirect root path to login page
 app.get('/', (req, res) => {
   res.redirect('/frontend/login.html');
 });
