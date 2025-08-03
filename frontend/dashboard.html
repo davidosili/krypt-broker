@@ -556,7 +556,7 @@ async function fetchChartData(coinId) {
     price
   }));
 
-  const res = await fetch(`http://localhost:3000/api/coin/chart/${coinId}?vs_currency=usd&days=7`);
+  const res = await fetch(`${API_URL}/coin/chart/${coinId}?vs_currency=usd&days=7`);
   const data = await res.json();
 
   setCachedData(`chart-${coinId}`, data.prices);

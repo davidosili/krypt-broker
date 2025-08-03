@@ -220,7 +220,7 @@
     }
 
     async function checkAuth() {
-      const res = await fetch('http://localhost:3000/api/auth/me', {
+      const res = await fetch('${API_URL}/auth/me', {
         credentials: 'include'
       });
 
@@ -235,7 +235,7 @@
     }
 
     async function logout() {
-      await fetch('http://localhost:3000/api/auth/logout', {
+      await fetch('${API_URL}/auth/logout`', {
         method: 'POST',
         credentials: 'include'
       });

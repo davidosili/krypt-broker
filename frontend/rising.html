@@ -36,7 +36,7 @@
 
   <script>
     async function loadRisingCoins() {
-      const res = await fetch('http://localhost:3000/api/coin/markets');
+      const res = await fetch('${API_URL}/coin/markets');
       const coins = await res.json();
 
       const rising = coins
