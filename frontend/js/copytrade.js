@@ -1,7 +1,7 @@
 // copytrade.js - Enhanced with USDT balance check
 const API_URL = location.hostname.includes('localhost') || location.hostname.includes('127.')
   ? 'http://localhost:3000/api'
-  : 'https://krypt-broker-backend.onrender.com/api';
+  : 'https://krypt-broker.onrender.com/api';
 
 const params = new URLSearchParams(window.location.search);
 const code = params.get('code');

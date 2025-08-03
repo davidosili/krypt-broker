@@ -1,6 +1,6 @@
 const API_URL = location.hostname.includes('localhost') || location.hostname.includes('127.')
   ? 'http://localhost:3000/api'
-  : 'https://krypt-broker-backend.onrender.com/api';
+  : 'https://krypt-broker.onrender.com/api';
 const coinSelect = document.getElementById('coinSelect');
 const amountInput = document.getElementById('amountInput');
 const priceDisplay = document.getElementById('priceDisplay');
