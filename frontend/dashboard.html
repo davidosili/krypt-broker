@@ -762,15 +762,20 @@ async function loadTrendingCoins() {
   
 // Start the chart rotation
 document.addEventListener('DOMContentLoaded', () => {
-  fetchUserInfo();
-  fetchPortfolioValue();
-  fetchTrendingCoins();
-  loadPortfolioChart();
-  updateChart();
-  setInterval(updateChart, 10000);
-loadNews();
-  loadTrendingCoins();
+  setTimeout(() => {
+    fetchUserInfo();
+    fetchPortfolioValue();
+    fetchTrendingCoins();
+    loadPortfolioChart();
+    updateChart();
+      setInterval(updateChart, 10000);
+    loadNews();
+    loadTrendingCoins();
+  }, 500);  // small delay to ensure cookie is stored
 });
+
+
+
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

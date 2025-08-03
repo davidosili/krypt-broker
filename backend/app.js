@@ -31,6 +31,10 @@ app.use(express.json());
 // ✅ Session config (secure for production, lax for local)
 const isProduction = process.env.NODE_ENV === 'production';
 
+if (isProduction) {
+  app.set('trust proxy', 1); // Required for secure cookies on Render
+}
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'secret',
   resave: false,
@@ -39,12 +43,12 @@ app.use(session({
     mongoUrl: process.env.MONGO_URI,
     ttl: 24 * 60 * 60 // 1 day
   }),
-  cookie: {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
-    maxAge: 24 * 60 * 60 * 1000
-  }
+cookie: {
+  httpOnly: true,
+  secure: isProduction,          // Only secure in production
+  sameSite: isProduction ? 'none' : 'lax',  // ✅ Lax for localhost, None for Render
+  maxAge: 24 * 60 * 60 * 1000
+}
 }));
 
 
