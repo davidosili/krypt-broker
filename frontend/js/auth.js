@@ -6,7 +6,7 @@ const loginForm = document.getElementById('loginForm');
 // Detect if running locally or on production
 const API_URL = location.hostname.includes('localhost') || location.hostname.includes('127.')
   ? 'http://localhost:3000/api'
-  : 'https://krypt-broker-backend.onrender.com/api';  // ✅ only one /api
+  : 'https://krypt-broker.onrender.com/api';  // ✅ only one /api
 
 if (registerForm) {
   registerForm.addEventListener('submit', async (e) => {
