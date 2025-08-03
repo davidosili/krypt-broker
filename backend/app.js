@@ -5,6 +5,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const cookieParser = require('cookie-parser'); // ✅ Needed for sessions
+const MongoStore = require('connect-mongo');
 
 dotenv.config();
 
@@ -34,13 +35,18 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'secret',
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    ttl: 24 * 60 * 60 // 1 day
+  }),
   cookie: {
     httpOnly: true,
-    secure: isProduction,      // ✅ Only true on production
-    sameSite: isProduction ? 'none' : 'lax', // ✅ Needed for cross-site cookies
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
+
 
 console.log('isProduction:', isProduction);
 
