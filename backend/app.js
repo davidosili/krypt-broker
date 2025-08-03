@@ -10,24 +10,16 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  'http://localhost:5500',
-  'http://127.0.0.1:5500',
-  'https://mr73c5kx-5500.uks1.devtunnels.ms',
-  'https://krypt-broker-site.onrender.com'
-];
-
+// ✅ CORS config - allow DevTunnel frontend to access the backend
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: [
+    'http://localhost:5500',
+    'http://127.0.0.1:5500',
+    'https://mr73c5kx-5500.uks1.devtunnels.ms',
+     'https://krypt-broker-frontend.onrender.com' // ✅  frontend
+  ],
   credentials: true
 }));
-
 
 // ✅ Parse cookies before sessions
 app.use(cookieParser());
