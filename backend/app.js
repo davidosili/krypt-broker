@@ -4,21 +4,20 @@ const session = require('express-session');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
-const cookieParser = require('cookie-parser'); // ✅ Needed for sessions to work properly
+const cookieParser = require('cookie-parser'); // ✅ Needed for sessions
 
 dotenv.config();
 
 const app = express();
 
-// ✅ CORS config - allow DevTunnel frontend to access the backend
+// ✅ CORS config - only local + Render frontends
 app.use(cors({
   origin: [
     'http://localhost:5500',
     'http://127.0.0.1:5500',
-    'https://mr73c5kx-5500.uks1.devtunnels.ms',
-     'https://krypt-broker-site.onrender.com',
-     'https://krypt-broker-frontend.onrender.com',
-     'https://krypt-broker.onrender.com' // ✅  frontend
+    'https://krypt-broker-site.onrender.com',
+    'https://krypt-broker-frontend.onrender.com',
+    'https://krypt-broker.onrender.com'
   ],
   credentials: true
 }));
@@ -29,8 +28,8 @@ app.use(cookieParser());
 // ✅ Enable JSON parsing
 app.use(express.json());
 
-// ✅ Session config - this must come after cookieParser
-const isDevTunnel = process.env.NODE_ENV === 'production' || process.env.DEVTUNNEL === 'true';
+// ✅ Session config (secure for production, lax for local)
+const isProduction = process.env.NODE_ENV === 'production';
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'secret',
@@ -38,14 +37,13 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: isDevTunnel,
-    sameSite: isDevTunnel ? 'none' : 'lax',
+    secure: isProduction,      // ✅ Only true on production
+    sameSite: isProduction ? 'none' : 'lax', // ✅ Needed for cross-site cookies
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
-console.log('isDevTunnel:', isDevTunnel);
-
+console.log('isProduction:', isProduction);
 
 // ✅ Routes
 const paymentRoutes = require('./routes/paymentRoutes');
