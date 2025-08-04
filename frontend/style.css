@@ -673,3 +673,158 @@ body.light-mode .crypto-bg {
     margin: -1px 0 0 0;
     pointer-events: none;
 }
+/* ===================== */
+/* ✅ Mobile Responsiveness */
+/* ===================== */
+
+/* Tablets and small laptops (≤ 1024px) */
+@media (max-width: 1024px) {
+    .nav-container {
+        padding: 0 1rem;
+    }
+    .features-grid,
+    .benefits-grid,
+    .stats-grid,
+    .partners-logos {
+        justify-content: center;
+        gap: 1.5rem;
+    }
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    .hero p {
+        font-size: 1.1rem;
+    }
+}
+
+/* Mobile devices (≤ 768px) */
+@media (max-width: 768px) {
+    /* Stack navbar vertically */
+    nav ul {
+        flex-direction: column;
+        background: #23272f;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        padding: 1rem;
+        display: none; /* hidden by default */
+    }
+
+    nav ul.show {
+        display: flex; /* toggle this via JS for hamburger menu */
+    }
+
+    /* Hero text smaller */
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    .hero p {
+        font-size: 1rem;
+    }
+
+    /* Cards take full width */
+    .feature-card,
+    .benefit-card,
+    .stat-card {
+        width: 90%;
+        max-width: 400px;
+    }
+
+    /* Newsletter stacked */
+    .newsletter-form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .newsletter-form input[type="email"] {
+        border-radius: 8px;
+        min-width: unset;
+        width: 90%;
+    }
+
+    .newsletter-form button {
+        border-radius: 8px;
+        width: 50%;
+        margin-top: 0.5rem;
+    }
+
+    /* Hero CTA button */
+    .cta-btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    /* Social icons smaller */
+    .social-icons {
+        gap: 1rem;
+    }
+
+    /* Stats */
+    .stats-grid {
+        gap: 1rem;
+    }
+}
+
+/* Very small devices (≤ 480px) */
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.5rem;
+    }
+    .hero p {
+        font-size: 0.9rem;
+    }
+    .typewriter {
+        font-size: 1.6rem;
+        min-height: 2rem;
+    }
+    .logo-text {
+        font-size: 1.5rem;
+    }
+    .ticker {
+        font-size: 0.8rem;
+        gap: 1rem;
+        padding: 0.3rem 1rem;
+    }
+    footer {
+        font-size: 0.85rem;
+    }
+}
+
+/* ===================== */
+/* ✅ Hamburger Menu CSS */
+/* ===================== */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #00ffe7;
+    cursor: pointer;
+    position: absolute;
+    right: 1px;
+    z-index: 1000;
+}
+
+/* Show hamburger on mobile */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    nav ul {
+        position: absolute;
+        top: 60px;
+        right: 200px;
+        width: 200px;
+        background: #23272f;
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+        display: none; /* hidden by default */
+    }
+
+    nav ul.show {
+        display: flex; /* toggled by JS */
+    }
+}

@@ -54,7 +54,7 @@ async function loadPortfolio() {
     for (let [coin, amt] of Object.entries(data.portfolio)) {
       const li = document.createElement('li');
       li.textContent = `${coin}: ${amt}`;
-      portfolioList.appendChild(li);
+      portfolioList.appendChild(li); // Light background for better contrast
     }
   } catch (err) {
     portfolioList.innerHTML = '<li>Error loading portfolio</li>';
