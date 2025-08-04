@@ -77,7 +77,7 @@ app.use('/frontend', express.static(path.join(__dirname, '../frontend')));
 
 // ✅ Redirect root path to login page
 app.get('/', (req, res) => {
-  res.redirect('/frontend/login.html');
+  res.redirect('/frontend/index.html');
 });
 
 // ✅ Start background jobs
