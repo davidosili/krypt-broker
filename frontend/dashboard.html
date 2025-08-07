@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Crypto Broker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   <style>
     body {
@@ -127,22 +128,23 @@
   </div>
 <nav class="bottom-nav">
   <a href="dashboard.html" class="active">
-    <span class="icon">🏠</span>
+    <span class="icon"><i class="fas fa-home"></i></span>
     <span class="label">Home</span>
   </a>
   <a href="markets.html">
-    <span class="icon">📈</span>
+    <span class="icon"><i class="fas fa-chart-line"></i></span>
     <span class="label">Markets</span>
   </a>
   <a href="trade.html">
-    <span class="icon">💱</span>
+    <span class="icon"><i class="fas fa-exchange-alt"></i></span>
     <span class="label">Trade</span>
   </a>
   <a href="assets.html">
-    <span class="icon">📂</span>
+    <span class="icon"><i class="fas fa-wallet"></i></span>
     <span class="label">Assets</span>
   </a>
 </nav>
+
 
 </div>
 <div id="sidebarToggle">☰</div>
@@ -192,9 +194,6 @@
   <div id="trendingCoins" class="coin-grid"></div>
 </section>
 
-<div style="max-height: 200px; overflow-y: auto;">
-  <ul id="newsList"></ul>
-</div>
 
 
 <iframe class="card" width="100%" scrolling="yes" allowtransparency="true" frameborder="0" src="https://cryptopanic.com/widgets/news/?bg_color=FFFFFF&amp;font_family=sans&amp;header_bg_color=30343B&amp;header_text_color=FFFFFF&amp;link_color=0091C2&amp;news_feed=recent&amp;text_color=333333&amp;title=Latest%20News" height="350px"></iframe>
@@ -676,46 +675,7 @@ function setCachedData(key, data) {
   }));
 }
 
-async function loadNews() {
-  try {
-    const res = await fetch(`${API_URL}/news`);
-    const news = await res.json();
 
-    if (!Array.isArray(news)) {
-      console.warn("Expected array, got:", news);
-      return;
-    }
-
-    const ul = document.getElementById('newsList');
-    ul.innerHTML = '';
-
-    news.slice(0, 5).forEach(item => {
-      const li = document.createElement('li');
-      li.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-          ${item.image ? `<img src="${item.image}" alt="news" style="height:40px; width: 40px; border-radius: 5px; object-fit: cover;">` : ''}
-          <div>
-            <a href="${item.url}" target="_blank" style="font-weight: bold;">${item.title}</a><br>
-            <small>${new Date(item.published_at).toLocaleTimeString()}</small>
-          </div>
-        </div>
-      `;
-      ul.appendChild(li);
-    });
-
-  } catch (e) {
-    console.error("❌ Failed to load news:", e);
-    document.getElementById('newsList').innerHTML = `<li>⚠️ Unable to load news</li>`;
-  }
-}
-
-
-const sidebar = document.getElementById('sidebar');
-  const toggle = document.getElementById('sidebarToggle');
-
-  toggle.addEventListener('click', () => {
-    sidebar.style.left = sidebar.style.left === '0px' ? '-250px' : '0px';
-  });
 
 
 async function loadTrendingCoins() {
@@ -769,7 +729,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPortfolioChart();
     updateChart();
       setInterval(updateChart, 10000);
-    loadNews();
     loadTrendingCoins();
   }, 500);  // small delay to ensure cookie is stored
 });

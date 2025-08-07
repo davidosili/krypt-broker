@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Markets - Crypto Broker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   <style>
     body {
@@ -115,12 +116,25 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Bottom Navigation -->
-  <div class="bottom-nav">
-    <a href="dashboard.html"><span>🏠</span> Home</a>
-    <a href="markets.html" class="active"><span>📈</span> Markets</a>
-    <a href="trade.html"><span>💱</span> Trade</a>
-    <a href="assets.html"><span>📂</span> Assets</a>
-  </div>
+<nav class="bottom-nav">
+  <a href="dashboard.html" class="active">
+    <span class="icon"><i class="fas fa-home"></i></span>
+    <span class="label">Home</span>
+  </a>
+  <a href="markets.html">
+    <span class="icon"><i class="fas fa-chart-line"></i></span>
+    <span class="label">Markets</span>
+  </a>
+  <a href="trade.html">
+    <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+    <span class="label">Trade</span>
+  </a>
+  <a href="assets.html">
+    <span class="icon"><i class="fas fa-wallet"></i></span>
+    <span class="label">Assets</span>
+  </a>
+</nav>
+
 
 <script>
 const API_URL = (location.hostname.includes('localhost') || location.hostname.includes('127.'))
