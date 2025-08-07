@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Trade - Crypto Broker</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
       margin: 0;
@@ -132,24 +133,25 @@
   <!-- Your dashboard content here -->
 
   <!-- Bottom Navigation -->
-  <nav class="bottom-nav">
-    <a href="dashboard.html" class="active">
-      <span class="icon">🏠</span>
-      <span class="label">Home</span>
-    </a>
-    <a href="markets.html">
-      <span class="icon">📈</span>
-      <span class="label">Markets</span>
-    </a>
-    <a href="trade.html">
-      <span class="icon">💱</span>
-      <span class="label">Trade</span>
-    </a>
-    <a href="assets.html">
-      <span class="icon">📂</span>
-      <span class="label">Assets</span>
-    </a>
-  </nav>
+<nav class="bottom-nav">
+  <a href="dashboard.html" class="active">
+    <span class="icon"><i class="fas fa-home"></i></span>
+    <span class="label">Home</span>
+  </a>
+  <a href="markets.html">
+    <span class="icon"><i class="fas fa-chart-line"></i></span>
+    <span class="label">Markets</span>
+  </a>
+  <a href="trade.html">
+    <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+    <span class="label">Trade</span>
+  </a>
+  <a href="assets.html">
+    <span class="icon"><i class="fas fa-wallet"></i></span>
+    <span class="label">Assets</span>
+  </a>
+</nav>
+
 
   <div class="container">
     <div class="trade-box">
@@ -174,24 +176,12 @@
       </div>
 
       <label for="amountInput">Amount</label>
-      <input type="number" id="amountInput" class="input-box" step="0.0001" min="0" value="0.00">
-
-      <div class="percent-buttons">
-        <button>25%</button>
-        <button>50%</button>
-        <button>75%</button>
-        <button>100%</button>
-      </div>
+      <input type="number" id="amountInput" class="input-box" step="0.0001" min="0">
 
       <div class="summary-row">
         <span>Total</span>
         <span>$0.00</span>
       </div>
-      <div class="summary-row">
-        <span>Available</span>
-        <span>$25,000.00</span>
-      </div>
-
       <button class="buy-button" onclick="placeTrade(tradeType)">Submit</button>
     </div>
 
