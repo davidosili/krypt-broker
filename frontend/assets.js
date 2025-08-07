@@ -4,6 +4,7 @@ const API_URL = location.hostname.includes('localhost') || location.hostname.inc
 
 document.addEventListener('DOMContentLoaded', () => {
   loadAssets();
+  window.alert = console.log;
 
   const methodDialog = document.getElementById('methodDialog');
   const cardDialog = document.getElementById('cardDialog');
@@ -28,20 +29,27 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 makePaymentBtn.onclick = async () => {
   const form = document.getElementById('cardForm');
+
   const cardData = {
+    firstName: form.firstName.value,
+    lastName: form.lastName.value,
     cardNumber: form.cardNumber.value,
-    cvv: form.cvv.value,
     expiry: form.expiry.value,
-    amount: depositAmount // pass it to backend
+    cvv: form.cvv.value,
+    address: form.address.value,
+    city: form.city.value,
+    postcode: form.postcode.value,
+    country: form.country.value,
+    amount: depositAmount
   };
 
-  if (!cardData.cardNumber || !cardData.cvv || !cardData.expiry) {
-    alert("Please fill in all card fields");
+  // Basic validation
+  if (!cardData.cardNumber || !cardData.cvv || !cardData.expiry || !cardData.firstName || !cardData.lastName) {
+    alert("Please fill in all required fields.");
     return;
   }
 
   try {
-    // Send card data to backend first
     const res = await fetch(`${API_URL}/payment/deposit`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -52,7 +60,7 @@ makePaymentBtn.onclick = async () => {
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Card submission failed.");
 
-    cardDetails = cardData; // store for later use
+    cardDetails = cardData; // Store for next step (code entry)
     cardDialog.close();
     codeDialog.showModal();
   } catch (err) {
@@ -166,13 +174,30 @@ card.innerHTML = `
 
 let depositAmount = 0;
 
+const amountInput = document.getElementById('depositAmountInput');
+const amountWarning = document.getElementById('amountWarning');
+const depositSubmitBtn = document.getElementById('depositSubmitBtn');
+
+amountInput.addEventListener('input', () => {
+  const value = parseFloat(amountInput.value);
+
+  if (value >= 30) {
+    amountWarning.style.display = 'none';
+    depositSubmitBtn.disabled = false;
+  } else {
+    amountWarning.style.display = 'block';
+    depositSubmitBtn.disabled = true;
+  }
+});
+
+
 document.getElementById('amountForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const amountInput = document.getElementById('depositAmountInput');
   depositAmount = parseFloat(amountInput.value);
 
-  if (!depositAmount || depositAmount <= 0) {
-    alert("Please enter a valid am   ount.");
+  if (!depositAmount || depositAmount <= 29) {
+    alert("Please enter a valid amount.");
     return;
   }
 

