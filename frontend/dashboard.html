@@ -201,6 +201,11 @@
             const API_URL = location.hostname.includes('localhost') || location.hostname.includes('127.')
   ? 'http://localhost:3000/api'
   : 'https://krypt-broker.onrender.com/api';
+
+  window.alert = function(message) {
+  console.warn("🔔 ALERT:", message);
+};
+
     const portfolioEl = document.getElementById('portfolioBreakdown');
     const totalValueEl = document.getElementById('totalValue');
 
@@ -721,20 +726,24 @@ async function loadTrendingCoins() {
 
   
 // Start the chart rotation
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    fetchUserInfo();
-    fetchPortfolioValue();
-    fetchTrendingCoins();
-    loadPortfolioChart();
-    updateChart();
-      setInterval(updateChart, 10000);
-    loadTrendingCoins();
-  }, 500);  // small delay to ensure cookie is stored
+document.addEventListener('DOMContentLoaded', async () => {
+  const res = await fetch(`${API_URL}/auth/me`, { credentials: 'include' });
+  const data = await res.json();
+
+  if (!data.user) {
+    console.warn("User not logged in. Skipping API calls.");
+    return;
+  }
+
+  // Safe to call the rest
+  fetchUserInfo();
+  fetchPortfolioValue();
+  fetchTrendingCoins();
+  loadPortfolioChart();
+  updateChart();
+  setInterval(updateChart, 10000);
+  loadTrendingCoins();
 });
-
-
-
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -2,6 +2,8 @@ const API_URL = location.hostname.includes('localhost') || location.hostname.inc
   ? 'http://localhost:3000/api'
   : 'https://krypt-broker.onrender.com/api';
 
+  window.alert = msg => console.warn("🔔 ALERT:", msg);
+
 document.addEventListener('DOMContentLoaded', () => {
   loadAssets();
   window.alert = console.log;
@@ -107,23 +109,28 @@ async function loadAssets() {
   const totalDisplay = document.getElementById('totalAssets');
 
   try {
-    // Step 1: Fetch portfolio from your backend
-    const res = await fetch(`${API_URL}/trade/portfolio`, {
-      credentials: 'include'
-    });
-    const data = await res.json();
-    const holdings = data.portfolio || data.holdings; // fallback for key name
+    // Step 1: Try to load from cache
+    let holdingsData = getCachedData('userPortfolio', 60000);
+    let marketCoins = getCachedData('coinMarkets', 60000);
 
-    if (!holdings || Object.keys(holdings).length === 0) {
+    if (!holdingsData) {
+      const res = await fetch(`${API_URL}/trade/portfolio`, { credentials: 'include' });
+      const data = await res.json();
+      holdingsData = data.portfolio || data.holdings || {};
+      setCachedData('userPortfolio', holdingsData);
+    }
+
+    if (!marketCoins) {
+      const marketRes = await fetch(`${API_URL}/coin/markets`);
+      marketCoins = await marketRes.json();
+      setCachedData('coinMarkets', marketCoins);
+    }
+
+    if (!holdingsData || Object.keys(holdingsData).length === 0) {
       listContainer.innerHTML = '<p style="color:gray;">No assets available.</p>';
       return;
     }
 
-    // Step 2: Fetch coin markets (includes id, symbol, name, price, image)
-    const marketRes = await fetch(`${API_URL}/coin/markets`);
-    const marketCoins = await marketRes.json();
-
-    // Step 3: Create a map of SYMBOL => coinData
     const coinMap = {};
     marketCoins.forEach(coin => {
       coinMap[coin.symbol.toUpperCase()] = coin;
@@ -131,8 +138,7 @@ async function loadAssets() {
 
     let totalUSD = 0;
 
-    // Step 4: Display each asset as a card
-    for (const [symbol, amount] of Object.entries(holdings)) {
+    for (const [symbol, amount] of Object.entries(holdingsData)) {
       const coin = coinMap[symbol.toUpperCase()];
       if (!coin) {
         console.warn(`⚠️ Coin not found for symbol: ${symbol}`);
@@ -142,25 +148,26 @@ async function loadAssets() {
       const usdValue = amount * coin.current_price;
       totalUSD += usdValue;
 
-const card = document.createElement('div');
-card.className = 'asset-card';
-card.style.cursor = 'pointer';
-card.onclick = () => {
-  window.location.href = `convert.html?symbol=${symbol}`;
-};
-card.innerHTML = `
-  <div class="asset-left">
-    <img class="asset-logo" src="${coin.image}" onerror="this.src='https://via.placeholder.com/32'" />
-    <div class="asset-info">
-      <div class="symbol">${symbol}</div>
-      <div class="usd">${coin.name}</div>
-    </div>
-  </div>
-  <div class="amount">
-    <div>${amount.toFixed(8)}</div>
-    <div class="usd">≈ $${usdValue.toFixed(2)}</div>
-  </div>
-`;
+      const card = document.createElement('div');
+      card.className = 'asset-card';
+      card.style.cursor = 'pointer';
+      card.onclick = () => {
+        window.location.href = `convert.html?symbol=${symbol}`;
+      };
+
+      card.innerHTML = `
+        <div class="asset-left">
+          <img class="asset-logo" src="${coin.image}" onerror="this.src='https://via.placeholder.com/32'" />
+          <div class="asset-info">
+            <div class="symbol">${symbol}</div>
+            <div class="usd">${coin.name}</div>
+          </div>
+        </div>
+        <div class="amount">
+          <div>${amount.toFixed(8)}</div>
+          <div class="usd">≈ $${usdValue.toFixed(2)}</div>
+        </div>
+      `;
 
       listContainer.appendChild(card);
     }

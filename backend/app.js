@@ -11,6 +11,22 @@ dotenv.config();
 
 const app = express();
 
+// ✅ Warm CoinGecko /markets cache at startup
+async function warmCache() {
+  try {
+    const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1');
+    const data = await res.json();
+    setCache('markets', data, 60_000); // Cache for 60s
+    console.log('✅ Preloaded /markets cache');
+  } catch (err) {
+    console.error('❌ Failed to preload markets cache:', err);
+  }
+}
+
+warmCache(); // Run once at startup
+// Optional: refresh every 60 seconds
+// setInterval(warmCache, 60_000); 
+
 // ✅ CORS config - only local + Render frontends
 app.use(cors({
   origin: [
