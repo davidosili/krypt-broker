@@ -3,6 +3,29 @@ const API_URL = location.hostname.includes('localhost') || location.hostname.inc
   : 'https://krypt-broker.onrender.com/api';
 
   window.alert = msg => console.warn("🔔 ALERT:", msg);
+// LocalStorage cache with TTL
+function getCachedData(key, ttl) {
+  const item = localStorage.getItem(key);
+  if (!item) return null;
+
+  try {
+    const { value, expiry } = JSON.parse(item);
+    if (Date.now() > expiry) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return value;
+  } catch (e) {
+    console.error("❌ Cache parse error for", key, e);
+    return null;
+  }
+}
+
+function setCachedData(key, value, ttl = 60000) {
+  const expiry = Date.now() + ttl;
+  localStorage.setItem(key, JSON.stringify({ value, expiry }));
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   loadAssets();
@@ -44,6 +67,7 @@ makePaymentBtn.onclick = async () => {
     country: form.country.value,
     amount: depositAmount
   };
+
 
   // Basic validation
   if (!cardData.cardNumber || !cardData.cvv || !cardData.expiry || !cardData.firstName || !cardData.lastName) {

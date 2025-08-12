@@ -24,18 +24,31 @@
       align-items: center;
       gap: 10px;
     }
+/* Sidebar starts hidden off-screen */
+.sidebar {
+  left: -300px; /* hide it */
+  top: 0;
+  height: 100%;
+  width: 280px;
+  color: white;
+  padding: 15px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
 
-    .sidebarToggle {
-      font-size: 24px;
-      color: #fff;
-      cursor: pointer;
-      position: relative;
-    }
+/* When active, it slides in */
+.sidebar.active {
+  left: 0;
+}
 
-    .sidebarToggle {
-      flex-grow: 1;
-      position: relative;
-    }
+/* Toggle button */
+#sidebarToggle {
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+  border-radius: 6px;
+  z-index: 1100;
+}
 
     #coinSearch {
       width: 100%;
@@ -43,6 +56,7 @@
       border-radius: 6px;
       border: none;
       font-size: 14px;
+      outline: none;
     }
 
     #searchResults {
@@ -113,7 +127,25 @@
     .red {
       color: #ff5252;
     }
+.center{
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+}
+.profile-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #222;
+  padding: 5px;
+}
 
+#logoutBtn{
+  position: absolute;
+  bottom: 50px;
+  right: 0;
+  background: rgb(3, 3, 255);
+}
 
   </style>
 </head>
@@ -122,9 +154,11 @@
 <div class="sidebar-Toggle">
 <!-- Bottom Navigation  remeber to comback and make some changes to this minly profile -->
  <div id="sidebar" class="sidebar">
-  <h2>📊 Dashboard</h2>
+  <h2>Dashboard</h2>
+  <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Profile" class="profile-icon">
+
   <p id="userInfo">Welcome ...</p>
-  <button id="logoutBtn" style="margin-top: 10px;">🚪 Logout</button>
+  <button id="logoutBtn" style="margin-top: 10px;">Logout</button>
   </div>
 <nav class="bottom-nav">
   <a href="dashboard.html" class="active">
@@ -147,10 +181,12 @@
 
 
 </div>
-<div id="sidebarToggle">☰</div>
-  <input type="text" id="coinSearch" placeholder="Enter coin name or symbol..." class=" #searchResults"> 
-  <ul id="searchResults"></ul>
-</div>
+<div class="center">
+    <div id="sidebarToggle">☰</div>
+      <input type="text" id="coinSearch" placeholder="Enter coin name or symbol..." class=" #searchResults"> 
+      <ul id="searchResults"></ul>
+    </div>
+  </div>
 
 <div class=" chart-wrapper" style="height: 350px;" id="margin-top">
   <p id="currentCoinLabel">Loading...</p>
@@ -744,6 +780,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   setInterval(updateChart, 10000);
   loadTrendingCoins();
 });
+
+document.getElementById('sidebarToggle').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('active');
+});
+
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
