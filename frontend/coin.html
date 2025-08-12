@@ -334,10 +334,10 @@ if (links.homepage?.[0]) {
       label: `${coinName} Price (USD)`,
       data: prices,
       borderColor: 'white',
-      backgroundColor: 'inherit',
+      backgroundColor: 'grey',
       fill: true,
       tension: 0.4, // smoother curve
-      borderWidth: 3,
+      borderWidth: 1.5,
       pointRadius: 0,         // no circles at points
       pointHoverRadius: 4     // show point on hover
     }]
@@ -358,7 +358,7 @@ scales: {
     beginAtZero: false,
     ticks: {
       callback: value => `$${value.toLocaleString()}`,
-      color: '#555'
+      color: 'white'
     }
   }
 },
