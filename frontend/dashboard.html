@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+480p<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -340,7 +340,7 @@
     });
 
   } catch (err) {
-    console.error("❌ Failed to load portfolio:", err);
+    console.error("❌ Failed to load portfolio reloqd after 15seconds:", err);
     portfolioEl.innerHTML = '<p style="color:red;">Error loading portfolio</p>';
   }
 }
@@ -758,7 +758,7 @@ async function loadTrendingCoins() {
 
   } catch (err) {
     console.error('❌ Error loading trending coins:', err);
-    container.innerHTML = '<p>Failed to load trending coins.</p>';
+    container.innerHTML = '<p>Failed to load trending coins. Reload after 10seconds</p>';
   }
 }
 
