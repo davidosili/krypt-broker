@@ -1,6 +1,6 @@
 const API_URL = location.hostname.includes('localhost') || location.hostname.includes('127.')
   ? 'http://localhost:3000/api'
-  : 'https://krypt-broker.onrender.com/api';
+  : 'https://krypt-0ep2.onrender.com/api';
 
   window.alert = msg => console.warn("🔔 ALERT:", msg);
 // LocalStorage cache with TTL

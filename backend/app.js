@@ -33,7 +33,8 @@ app.use(cors({
     'http://localhost:5500',
     'http://127.0.0.1:5500',
     'https://krypt-broker-site.onrender.com',
-    'https://krypt-broker.onrender.com'
+    'https://krypt-broker.onrender.com',
+    'https://krypt-0ep2.onrender.com'
   ],
   credentials: true
 }));
